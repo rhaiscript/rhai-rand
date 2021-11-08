@@ -1,0 +1,21 @@
+[package]
+name = "rhai-rand"
+version = "0.1.0"
+edition = "2018"
+authors = ["Stephen Chung"]
+description = "Random number package for Rhai"
+homepage = "https://rhai.rs"
+repository = "https://github.com/rhaiscript"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+keywords = ["scripting", "scripting-engine", "scripting-language", "embedded", "rhai", "random"]
+categories = ["embedded"]
+
+[dependencies]
+rhai = { path = "../rhai" }
+rand = "0.8"
+
+[features]
+default = [ "float", "shuffle" ]
+float = []
+shuffle = []
