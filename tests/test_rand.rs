@@ -27,7 +27,7 @@ fn test_rand() -> Result<(), Box<EvalAltResult>> {
     }
 
     for _ in 0..10 {
-        let value = engine.eval::<INT>("rand()")?;
+        let value = engine.eval::<INT>("(rand() % 100).abs()")?;
 
         println!("Random number = {}", value);
     }

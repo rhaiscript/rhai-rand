@@ -16,14 +16,38 @@ to add scripting to any application.
 Usage
 -----
 
-`Cargo.toml`:
+### `Cargo.toml`
 
 ```toml
 [dependencies]
 rhai-rand = "0.1"
 ```
 
-Rust source:
+### [Rhai] script
+
+```js
+// Create random boolean
+let decision = rand_bool();
+
+if decision {
+    // Create random number
+    let random_value = rand();
+    print(`Random number = ${random_value}`);
+} else {
+    print("Fixed number = 42");
+}
+
+// Create array
+let a = [1, 2, 3, 4, 5];
+
+// Shuffle it!
+a.shuffle();
+
+// Now the array is shuffled randomly!
+print(a);
+```
+
+### Rust source
 
 ```rust
 use rhai::Engine;
@@ -35,21 +59,12 @@ let mut engine = Engine::new();
 // Create random number package and add the package into the engine
 engine.register_global_module(RandomPackage::new().as_shared_module());
 
-// Print 10 random numbers!
+// Print 10 random numbers, each of which between 0-99!
 for _ in 0..10 {
-    let value = engine.eval::<INT>("rand()")?;
+    let value = engine.eval::<INT>("(rand() % 100).abs()")?;
 
     println!("Random number = {}", value);
 }
-
-// Create array
-let a = [1, 2, 3, 4, 5];
-
-// Shuffle it!
-a.shuffle();
-
-// Now the array is shuffled randomly!
-print(a);
 ```
 
 

@@ -12,7 +12,7 @@ keywords = ["scripting", "scripting-engine", "scripting-language", "embedded", "
 categories = ["embedded"]
 
 [dependencies]
-rhai = { path = "../rhai" }
+rhai = { version = "1.2", path = "../rhai" }
 rand = "0.8"
 
 [features]
