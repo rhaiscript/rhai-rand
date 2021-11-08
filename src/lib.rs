@@ -13,13 +13,17 @@ def_package!(rhai:RandomPackage:"Random number generation.", lib, {
 
 #[export_module]
 mod rand_functions {
+    pub fn rand_bool() -> bool {
+        rand::random()
+    }
+
     pub fn rand() -> INT {
-        rand::random::<INT>()
+        rand::random()
     }
 
     #[cfg(feature = "float")]
     pub fn rand_float() -> FLOAT {
-        rand::random::<FLOAT>()
+        rand::random()
     }
 
     #[cfg(feature = "shuffle")]
