@@ -4,7 +4,7 @@ use rhai::{def_package, plugin::*, INT};
 #[cfg(feature = "float")]
 use rhai::FLOAT;
 
-#[cfg(feature = "shuffle")]
+#[cfg(feature = "array_functions")]
 use rhai::Array;
 
 def_package!(rhai:RandomPackage:"Random number generation.", lib, {
@@ -26,7 +26,19 @@ mod rand_functions {
         rand::random()
     }
 
-    #[cfg(feature = "shuffle")]
+    #[cfg(feature = "array_functions")]
+    #[rhai_fn(global)]
+    pub fn sample(array: &mut Array) -> rhai::Dynamic {
+        if !array.is_empty() {
+            let mut rng = rand::thread_rng();
+            if let Some(res) = array.choose(&mut rng) {
+                return Dynamic::from(res.clone())
+            }
+        }
+        Dynamic::from(())
+    }
+
+    #[cfg(feature = "array_functions")]
     #[rhai_fn(global)]
     pub fn shuffle(array: &mut Array) {
         let mut rng = rand::thread_rng();

@@ -16,6 +16,6 @@ rhai = { version = "1.2", path = "../rhai" }
 rand = "0.8"
 
 [features]
-default = [ "float", "shuffle" ]
+default = [ "float", "array_functions" ]
 float = []
-shuffle = []
+array_functions = []

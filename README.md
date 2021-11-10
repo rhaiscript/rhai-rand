@@ -71,10 +71,10 @@ for _ in 0..10 {
 Features
 --------
 
-|  Feature  | Description                                     |
-| :-------: | ----------------------------------------------- |
-|  `float`  | enables random floating-point number generation |
-| `shuffle` | enables the `shuffle` method for [Rhai] arrays  |
+|      Feature      | Description                                     |
+| :---------------: | ----------------------------------------------- |
+|      `float`      | enables random floating-point number generation |
+| `array_functions` | enables the `shuffle` method for [Rhai] arrays  |
 
 
 API
@@ -82,12 +82,13 @@ API
 
 The following functions are defined in this package:
 
-|     Function      | Return value |  Feature  | Description                                                      |
-| :---------------: | :----------: | :-------: | ---------------------------------------------------------------- |
-|     `rand()`      |    `INT`     |           | generates a random number                                        |
-|  `rand_float()`   |   `FLOAT`    |  `float`  | generates a random floating-point number between `0.0` and `1.0` |
-|   `rand_bool()`   |    `bool`    |           | generates a random boolean                                       |
-| `Array.shuffle()` |              | `shuffle` | shuffles the items in the [Rhai] array                           |
+|     Function      | Return value |     Feature           | Description                                                      |
+| :---------------: | :----------: | :---------------: | ---------------------------------------------------------------- |
+|     `rand()`      |    `INT`     |                   | generates a random number                                        |
+|  `rand_float()`   |   `FLOAT`    |     `float`       | generates a random floating-point number between `0.0` and `1.0` |
+|   `rand_bool()`   |    `bool`    |                   | generates a random boolean                                       |
+| `Array.shuffle()` |              | `array_functions` | shuffles the items in the [Rhai] array                           |
+|  `Array.sample()` |  (Dynamic)   | `array_functions` | copy a random element from the [Rhai] array                      |
 
 
 [Rhai]: https://rhai.rs
