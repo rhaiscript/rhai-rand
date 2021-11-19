@@ -2,7 +2,7 @@
 name = "rhai-rand"
 version = "0.1.0"
 edition = "2018"
-authors = ["Stephen Chung"]
+authors = ["Stephen Chung", "Jay Thomas"]
 description = "Random number package for Rhai"
 homepage = "https://rhai.rs"
 repository = "https://github.com/rhaiscript"
