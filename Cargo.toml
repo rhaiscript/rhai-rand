@@ -8,11 +8,11 @@ homepage = "https://rhai.rs"
 repository = "https://github.com/rhaiscript"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
-keywords = ["scripting", "scripting-engine", "scripting-language", "embedded", "rhai", "random"]
+keywords = ["scripting", "scripting-language", "embedded", "rhai", "random"]
 categories = ["embedded"]
 
 [dependencies]
-rhai = { version = "1.2", path = "../rhai" }
+rhai = { version = "^1.2" }
 rand = { version = "0.8", features = ["alloc"] }
 
 [features]
