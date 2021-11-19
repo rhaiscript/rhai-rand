@@ -2,7 +2,7 @@
 name = "rhai-rand"
 version = "0.1.0"
 edition = "2018"
-authors = ["Stephen Chung"]
+authors = ["Stephen Chung", "Jay Thomas"]
 description = "Random number package for Rhai"
 homepage = "https://rhai.rs"
 repository = "https://github.com/rhaiscript"
@@ -13,9 +13,9 @@ categories = ["embedded"]
 
 [dependencies]
 rhai = { version = "1.2", path = "../rhai" }
-rand = "0.8"
+rand = { version = "0.8", features = ["alloc"] }
 
 [features]
-default = [ "float", "shuffle" ]
+default = [ "float", "array" ]
 float = []
-shuffle = []
+array = []
