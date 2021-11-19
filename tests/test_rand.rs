@@ -4,7 +4,7 @@ use rhai_rand::RandomPackage;
 #[cfg(feature = "float")]
 use rhai::FLOAT;
 
-#[cfg(feature = "array_functions")]
+#[cfg(feature = "array")]
 use rhai::Array;
 
 #[test]
@@ -35,7 +35,7 @@ fn test_rand() -> Result<(), Box<EvalAltResult>> {
     Ok(())
 }
 
-#[cfg(feature = "array_functions")]
+#[cfg(feature = "array")]
 #[test]
 fn test_sample() -> Result<(), Box<EvalAltResult>> {
     let mut engine = Engine::new();
@@ -68,7 +68,62 @@ fn test_sample() -> Result<(), Box<EvalAltResult>> {
     Ok(())
 }
 
-#[cfg(feature = "array_functions")]
+#[cfg(feature = "array")]
+#[test]
+fn test_sample2() -> Result<(), Box<EvalAltResult>> {
+    let mut engine = Engine::new();
+
+    engine.register_global_module(RandomPackage::new().as_shared_module());
+
+    let array = engine.eval::<Array>(
+        "
+            let a = ['a', 'b', 'c', 'd'];
+            a.sample(3)
+        "
+    )?;
+    assert_eq!(array.len(), 3, "Should return an array matching the requested sample size");
+
+    assert_eq!(
+        engine.eval::<bool>(
+            "
+                let a = ['a', 'b', 'c', 'd'];
+                let b = a.sample(4);
+                b.sort();
+                a == b
+            "
+        )?,
+        true,
+        "Should not return any duplicate samples"
+    );
+
+    let array = engine.eval::<Array>(
+        "
+            let a = ['a', 'b', 'c', 'd'];
+            a.sample(5)
+        "
+    )?;
+    assert_eq!(array.len(), 4, "Should be limited to the array's size");
+
+    let array = engine.eval::<Array>(
+        "
+            let a = ['a', 'b', 'c', 'd'];
+            a.sample(0)
+        "
+    )?;
+    assert_eq!(array.len(), 0, "Zero should return an empty array");
+
+    let array = engine.eval::<Array>(
+        "
+            let a = ['a', 'b', 'c', 'd'];
+            a.sample(-1)
+        "
+    )?;
+    assert_eq!(array.len(), 0, "Negative amounts should return an empty array");
+
+    Ok(())
+}
+
+#[cfg(feature = "array")]
 #[test]
 fn test_shuffle() -> Result<(), Box<EvalAltResult>> {
     let mut engine = Engine::new();
@@ -80,7 +135,7 @@ fn test_shuffle() -> Result<(), Box<EvalAltResult>> {
             let a = [];
             a.shuffle();
             a
-        ",
+        "
     )?;
 
     assert_eq!(array.len(), 0, "Should not affect empty arrays");
@@ -91,7 +146,7 @@ fn test_shuffle() -> Result<(), Box<EvalAltResult>> {
             let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
             a.shuffle();
             a
-        ",
+        "
     )?;
 
     println!("Array = {:?}", array);

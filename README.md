@@ -45,12 +45,20 @@ a.shuffle();
 
 // Now the array is shuffled randomly!
 print(a);
+
+// Sample a random value from the array
+print(a.sample());
+
+// Or sample multiple values
+print(a.sample(3));
 ```
 
 ### Rust source
 
 ```rust
-use rhai::Engine;
+// packages::Package implements `as_shared_module`
+// which we need to register the RandomPackage
+use rhai::{Engine, packages::Package};
 use rhai_rand::RandomPackage;
 
 // Create Rhai scripting engine
@@ -71,10 +79,10 @@ for _ in 0..10 {
 Features
 --------
 
-|      Feature      | Description                                     |
-| :---------------: | ----------------------------------------------- |
-|      `float`      | enables random floating-point number generation |
-| `array_functions` | enables the `shuffle` method for [Rhai] arrays  |
+| Feature | Description                                     |
+| :-----: | ----------------------------------------------- |
+| `float` | enables random floating-point number generation |
+| `array` | enables methods for [Rhai] arrays               |
 
 
 API
@@ -82,13 +90,14 @@ API
 
 The following functions are defined in this package:
 
-|     Function      | Return value |     Feature           | Description                                                      |
-| :---------------: | :----------: | :---------------: | ---------------------------------------------------------------- |
-|     `rand()`      |    `INT`     |                   | generates a random number                                        |
-|  `rand_float()`   |   `FLOAT`    |     `float`       | generates a random floating-point number between `0.0` and `1.0` |
-|   `rand_bool()`   |    `bool`    |                   | generates a random boolean                                       |
-| `Array.shuffle()` |              | `array_functions` | shuffles the items in the [Rhai] array                           |
-|  `Array.sample()` |  (Dynamic)   | `array_functions` | copy a random element from the [Rhai] array                      |
+|      Function      | Return value | Feature | Description                                                            |
+| :----------------: | :----------: | :-----: | ---------------------------------------------------------------------- |
+|      `rand()`      |    `INT`     |         | generates a random number                                              |
+|   `rand_float()`   |   `FLOAT`    | `float` | generates a random floating-point number between `0.0` and `1.0`       |
+|   `rand_bool()`    |    `bool`    |         | generates a random boolean                                             |
+| `Array.shuffle()`  |              | `array` | shuffles the items in the [Rhai] array                                 |
+|  `Array.sample()`  |  `Dynamic`   | `array` | copies a random element from the [Rhai] array                          |
+|  `Array.sample(n)` |   `Array`    | `array` | copies a non-repeating random sample of elements from the [Rhai] array |
 
 
 [Rhai]: https://rhai.rs
