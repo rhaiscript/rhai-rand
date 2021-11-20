@@ -7,7 +7,7 @@
 
 [![Rhai logo](https://rhai.rs/book/images/logo/rhai-banner-transparent-colour.svg)](https://rhai.rs)
 
-`rhai-rand` is a [Rhai] package to provide random numbers generation using the [`rand`] crate.
+`rhai-rand` is a [Rhai] package to provide random number generation using the [`rand`] crate.
 
 [Rhai] is an embedded scripting language and evaluation engine for Rust that gives a safe and easy way
 to add scripting to any application.
@@ -79,10 +79,10 @@ for _ in 0..10 {
 Features
 --------
 
-| Feature | Description                                     |
-| :-----: | ----------------------------------------------- |
-| `float` | enables random floating-point number generation |
-| `array` | enables methods for [Rhai] arrays               |
+| Feature | Default | Description                                      |
+| :-----: | :-----: | ------------------------------------------------ |
+| `float` | Enabled | provides random floating-point number generation |
+| `array` | Enabled | provides methods for [Rhai] arrays               |
 
 
 API
