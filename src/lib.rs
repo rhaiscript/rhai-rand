@@ -46,6 +46,7 @@
 //! ### Rust source
 //!
 //! ```rust
+//! # fn main() -> Result<(), Box<rhai::EvalAltResult>> {
 //! // packages::Package implements `as_shared_module`
 //! // which we need to register the RandomPackage
 //! use rhai::{Engine, packages::Package};
@@ -59,15 +60,15 @@
 //!
 //! // Print 10 random numbers, each of which between 0-99!
 //! for _ in 0..10 {
-//!     let value = engine.eval::<INT>("(rand() % 100).abs()")?;
+//!     let value = engine.eval::<i64>("(rand() % 100).abs()")?;
 //!
 //!     println!("Random number = {}", value);
 //! }
+//! # Ok(())
+//! # }
 //! ```
 //!
-//!
 //! ## Features
-//!
 //!
 //! | Feature | Default | Description                                      |
 //! | :-----: | :-----: | ------------------------------------------------ |
@@ -77,25 +78,29 @@
 //!
 //! ## API
 //!
-//!
 //! The following functions are defined in this package:
 //!
-//! |      Function      | Return value | Feature | Description                                                            |
-//! | :----------------: | :----------: | :-----: | ---------------------------------------------------------------------- |
-//! |      `rand()`      |    `INT`     |         | generates a random number                                              |
-//! |   `rand_float()`   |   `FLOAT`    | `float` | generates a random floating-point number between `0.0` and `1.0`       |
-//! |   `rand_bool()`    |    `bool`    |         | generates a random boolean                                             |
-//! | `Array.shuffle()`  |              | `array` | shuffles the elements in the [Rhai] array                                 |
-//! |  `Array.sample()`  |  `Dynamic`   | `array` | copies a random element from the [Rhai] array                          |
-//! |  `Array.sample(n)` |   `Array`    | `array` | copies a non-repeating random sample of elements from the [Rhai] array |
-//!
+//! |      Function       | Return type | Feature | Description                                                                  |
+//! | :-----------------: | :---------: | :-----: | ---------------------------------------------------------------------------- |
+//! |      `rand()`       |    `INT`    |         | generates a random number                                                    |
+//! | `rand(start..end)`  |    `INT`    |         | generates a random number within the exclusive range `start..end`            |
+//! | `rand(start..=end)` |    `INT`    |         | generates a random number within the inclusive range `start..=end`           |
+//! |   `rand_float()`    |   `FLOAT`   | `float` | generates a random floating-point number between `0.0` and `1.0` (exclusive) |
+//! |    `rand_bool()`    |   `bool`    |         | generates a random boolean                                                   |
+//! |   `rand_bool(p)`    |   `bool`    | `float` | generates a random boolean with the probability `p` of being `true`          |
+//! | `Array::shuffle()`  |             | `array` | shuffles the elements in the [Rhai] array                                    |
+//! | `Array::sample()`   |  `Dynamic`  | `array` | copies a random element from the [Rhai] array                                |
+//! | `Array::sample(n)`  |   `Array`   | `array` | copies a non-repeating random sample of elements from the [Rhai] array       |
 //!
 //!
 //! [Rhai]: https://rhai.rs
 //! [`rand`]: https://crates.io/crates/rand
 
 use rand::prelude::*;
-use rhai::{def_package, plugin::*, INT};
+use rhai::def_package;
+use rhai::plugin::*;
+use rhai::{EvalAltResult, Position, INT};
+use std::ops::{Range, RangeInclusive};
 
 #[cfg(feature = "float")]
 use rhai::FLOAT;
@@ -114,12 +119,60 @@ mod rand_functions {
         rand::random()
     }
 
+    /// Generate a random boolean value with a probability of being `true`.
+    ///
+    /// `probability` must be between `0.0` and `1.0` (inclusive).
+    #[cfg(feature = "float")]
+    #[rhai_fn(name = "rand", return_raw)]
+    pub fn rand_bool_with_probability(probability: FLOAT) -> Result<bool, Box<EvalAltResult>> {
+        if probability < 0.0 || probability > 1.0 {
+            Err(EvalAltResult::ErrorArithmetic(
+                format!(
+                    "Invalid probability (must be between 0.0 and 1.0): {}",
+                    probability
+                ),
+                Position::NONE,
+            )
+            .into())
+        } else {
+            Ok(rand::thread_rng().gen_bool(probability as f64))
+        }
+    }
+
     /// Generate a random integer number.
     pub fn rand() -> INT {
         rand::random()
     }
 
-    /// Generate a random floating-point number between `0.0` and `1.0`.
+    /// Generate a random integer number within an exclusive range.
+    #[rhai_fn(name = "rand", return_raw)]
+    pub fn rand_exclusive_range(range: Range<INT>) -> Result<INT, Box<EvalAltResult>> {
+        if range.is_empty() {
+            Err(EvalAltResult::ErrorArithmetic(
+                format!("Range is empty: {:?}", range),
+                Position::NONE,
+            )
+            .into())
+        } else {
+            Ok(rand::thread_rng().gen_range(range))
+        }
+    }
+
+    /// Generate a random integer number within an inclusive range.
+    #[rhai_fn(name = "rand", return_raw)]
+    pub fn rand_inclusive_range(range: RangeInclusive<INT>) -> Result<INT, Box<EvalAltResult>> {
+        if range.is_empty() {
+            Err(EvalAltResult::ErrorArithmetic(
+                format!("Range is empty: {:?}", range),
+                Position::NONE,
+            )
+            .into())
+        } else {
+            Ok(rand::thread_rng().gen_range(range))
+        }
+    }
+
+    /// Generate a random floating-point number between `0.0` and `1.0` (exclusive).
     ///
     /// `1.0` is _excluded_ from the possibilities.
     #[cfg(feature = "float")]
@@ -148,7 +201,7 @@ mod rand_functions {
     /// If `amount` ≥ length of array, the entire array is returned, but shuffled.
     #[cfg(feature = "array")]
     #[rhai_fn(global, name = "sample")]
-    pub fn sample2(array: &mut Array, amount: rhai::INT) -> Array {
+    pub fn sample_with_amount(array: &mut Array, amount: rhai::INT) -> Array {
         if array.is_empty() || amount <= 0 {
             return Array::new();
         }
