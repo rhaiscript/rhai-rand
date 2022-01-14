@@ -85,7 +85,7 @@
 //! |      `rand()`      |    `INT`     |         | generates a random number                                              |
 //! |   `rand_float()`   |   `FLOAT`    | `float` | generates a random floating-point number between `0.0` and `1.0`       |
 //! |   `rand_bool()`    |    `bool`    |         | generates a random boolean                                             |
-//! | `Array.shuffle()`  |              | `array` | shuffles the items in the [Rhai] array                                 |
+//! | `Array.shuffle()`  |              | `array` | shuffles the elements in the [Rhai] array                                 |
 //! |  `Array.sample()`  |  `Dynamic`   | `array` | copies a random element from the [Rhai] array                          |
 //! |  `Array.sample(n)` |   `Array`    | `array` | copies a non-repeating random sample of elements from the [Rhai] array |
 //!
@@ -109,36 +109,48 @@ def_package!(rhai:RandomPackage:"Random number generation.", lib, {
 
 #[export_module]
 mod rand_functions {
+    /// Generate a random boolean value.
     pub fn rand_bool() -> bool {
         rand::random()
     }
 
+    /// Generate a random integer number.
     pub fn rand() -> INT {
         rand::random()
     }
 
+    /// Generate a random floating-point number between `0.0` and `1.0`.
+    ///
+    /// `1.0` is _excluded_ from the possibilities.
     #[cfg(feature = "float")]
     pub fn rand_float() -> FLOAT {
         rand::random()
     }
 
+    /// Copy a random element from the array and return it.
     #[cfg(feature = "array")]
     #[rhai_fn(global)]
     pub fn sample(array: &mut Array) -> rhai::Dynamic {
         if !array.is_empty() {
             let mut rng = rand::thread_rng();
             if let Some(res) = array.choose(&mut rng) {
-                return res.clone()
+                return res.clone();
             }
         }
         Dynamic::UNIT
     }
 
+    /// Copy a non-repeating random sample of elements from the array and return it.
+    ///
+    /// Elements in the return array are likely not in the same order as in the original array.
+    ///
+    /// If `amount` ≤ 0, the empty array is returned.  
+    /// If `amount` ≥ length of array, the entire array is returned, but shuffled.
     #[cfg(feature = "array")]
     #[rhai_fn(global, name = "sample")]
     pub fn sample2(array: &mut Array, amount: rhai::INT) -> Array {
         if array.is_empty() || amount <= 0 {
-            return Array::new()
+            return Array::new();
         }
 
         let mut rng = rand::thread_rng();
@@ -158,6 +170,7 @@ mod rand_functions {
         }
     }
 
+    /// Shuffle the elements in the array.
     #[cfg(feature = "array")]
     #[rhai_fn(global)]
     pub fn shuffle(array: &mut Array) {
