@@ -12,7 +12,7 @@ keywords = ["scripting", "scripting-language", "embedded", "rhai", "random"]
 categories = ["embedded"]
 
 [dependencies]
-rhai = { version = "^1.2" }
+rhai = { version = "^1.4" }
 rand = { version = "0.8", features = ["alloc"] }
 
 [features]

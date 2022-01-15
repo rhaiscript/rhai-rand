@@ -60,7 +60,7 @@
 //!
 //! // Print 10 random numbers, each of which between 0-99!
 //! for _ in 0..10 {
-//!     let value = engine.eval::<i64>("(rand() % 100).abs()")?;
+//!     let value = engine.eval::<i64>("rand(0..100)")?;
 //!
 //!     println!("Random number = {}", value);
 //! }
@@ -115,6 +115,16 @@ def_package!(rhai:RandomPackage:"Random number generation.", lib, {
 #[export_module]
 mod rand_functions {
     /// Generate a random boolean value.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let decision = rand_bool();
+    ///
+    /// if decision {
+    ///     print("You hit the Jackpot!")
+    /// }
+    /// ```
     pub fn rand_bool() -> bool {
         rand::random()
     }
@@ -122,6 +132,16 @@ mod rand_functions {
     /// Generate a random boolean value with a probability of being `true`.
     ///
     /// `probability` must be between `0.0` and `1.0` (inclusive).
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let decision = rand(0.01);  // 1% probability
+    ///
+    /// if decision {
+    ///     print("You hit the Jackpot!")
+    /// }
+    /// ```
     #[cfg(feature = "float")]
     #[rhai_fn(name = "rand", return_raw)]
     pub fn rand_bool_with_probability(probability: FLOAT) -> Result<bool, Box<EvalAltResult>> {
@@ -140,11 +160,27 @@ mod rand_functions {
     }
 
     /// Generate a random integer number.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let number = rand();
+    ///
+    /// print(`I'll give you a random number: ${number}`);
+    /// ```
     pub fn rand() -> INT {
         rand::random()
     }
 
     /// Generate a random integer number within an exclusive range.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let number = rand(18..39);
+    ///
+    /// print(`I'll give you a random number between 18 and 38: ${number}`);
+    /// ```
     #[rhai_fn(name = "rand", return_raw)]
     pub fn rand_exclusive_range(range: Range<INT>) -> Result<INT, Box<EvalAltResult>> {
         if range.is_empty() {
@@ -159,6 +195,14 @@ mod rand_functions {
     }
 
     /// Generate a random integer number within an inclusive range.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let number = rand(18..=38);
+    ///
+    /// print(`I'll give you a random number between 18 and 38: ${number}`);
+    /// ```
     #[rhai_fn(name = "rand", return_raw)]
     pub fn rand_inclusive_range(range: RangeInclusive<INT>) -> Result<INT, Box<EvalAltResult>> {
         if range.is_empty() {
@@ -175,12 +219,30 @@ mod rand_functions {
     /// Generate a random floating-point number between `0.0` and `1.0` (exclusive).
     ///
     /// `1.0` is _excluded_ from the possibilities.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let number = rand_float();
+    ///
+    /// print(`I'll give you a random number between 0 and 1: ${number}`);
+    /// ```
     #[cfg(feature = "float")]
     pub fn rand_float() -> FLOAT {
         rand::random()
     }
 
     /// Copy a random element from the array and return it.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let x = [1, 2, 3, 4, 5];
+    ///
+    /// let number = x.sample();
+    ///
+    /// print(`I'll give you a random number between 1 and 5: ${number}`);
+    /// ```
     #[cfg(feature = "array")]
     #[rhai_fn(global)]
     pub fn sample(array: &mut Array) -> rhai::Dynamic {
@@ -197,8 +259,18 @@ mod rand_functions {
     ///
     /// Elements in the return array are likely not in the same order as in the original array.
     ///
-    /// If `amount` ≤ 0, the empty array is returned.  
-    /// If `amount` ≥ length of array, the entire array is returned, but shuffled.
+    /// * If `amount` ≤ 0, the empty array is returned.
+    /// * If `amount` ≥ length of array, the entire array is returned, but shuffled.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let x = [1, 2, 3, 4, 5];
+    ///
+    /// let samples = x.sample(3);
+    ///
+    /// print(`I'll give you 3 random numbers between 1 and 5: ${samples}`);
+    /// ```
     #[cfg(feature = "array")]
     #[rhai_fn(global, name = "sample")]
     pub fn sample_with_amount(array: &mut Array, amount: rhai::INT) -> Array {
@@ -224,6 +296,14 @@ mod rand_functions {
     }
 
     /// Shuffle the elements in the array.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let x = [1, 2, 3, 4, 5];
+    ///
+    /// x.shuffle();    // shuffle the elements inside the array
+    /// ```
     #[cfg(feature = "array")]
     #[rhai_fn(global)]
     pub fn shuffle(array: &mut Array) {
