@@ -47,9 +47,9 @@
 //!
 //! ```rust
 //! # fn main() -> Result<(), Box<rhai::EvalAltResult>> {
-//! // packages::Package implements `as_shared_module`
-//! // which we need to register the RandomPackage
-//! use rhai::{Engine, packages::Package};
+//! use rhai::Engine;
+//! use rhai::packages::Package;
+//!
 //! use rhai_rand::RandomPackage;
 //!
 //! // Create Rhai scripting engine
@@ -58,9 +58,9 @@
 //! // Create random number package and add the package into the engine
 //! engine.register_global_module(RandomPackage::new().as_shared_module());
 //!
-//! // Print 10 random numbers, each of which between 0-99!
+//! // Print 10 random numbers, each of which between 0-100!
 //! for _ in 0..10 {
-//!     let value = engine.eval::<i64>("rand(0..100)")?;
+//!     let value = engine.eval::<i64>("rand(0..=100)")?;
 //!
 //!     println!("Random number = {}", value);
 //! }
@@ -108,9 +108,15 @@ use rhai::FLOAT;
 #[cfg(feature = "array")]
 use rhai::Array;
 
-def_package!(rhai:RandomPackage:"Random number generation.", lib, {
-    combine_with_exported_module!(lib, "rand", rand_functions);
-});
+def_package! {
+    /// Package for random number generation, sampling and shuffling.
+    rhai::RandomPackage => |lib| {
+        combine_with_exported_module!(lib, "rand", rand_functions);
+
+        #[cfg(feature = "array")]
+        combine_with_exported_module!(lib, "array", array_functions);
+    }
+}
 
 #[export_module]
 mod rand_functions {
@@ -231,7 +237,11 @@ mod rand_functions {
     pub fn rand_float() -> FLOAT {
         rand::random()
     }
+}
 
+#[cfg(feature = "array")]
+#[export_module]
+mod array_functions {
     /// Copy a random element from the array and return it.
     ///
     /// # Example
@@ -243,7 +253,6 @@ mod rand_functions {
     ///
     /// print(`I'll give you a random number between 1 and 5: ${number}`);
     /// ```
-    #[cfg(feature = "array")]
     #[rhai_fn(global)]
     pub fn sample(array: &mut Array) -> rhai::Dynamic {
         if !array.is_empty() {
@@ -271,7 +280,6 @@ mod rand_functions {
     ///
     /// print(`I'll give you 3 random numbers between 1 and 5: ${samples}`);
     /// ```
-    #[cfg(feature = "array")]
     #[rhai_fn(global, name = "sample")]
     pub fn sample_with_amount(array: &mut Array, amount: rhai::INT) -> Array {
         if array.is_empty() || amount <= 0 {
@@ -304,7 +312,6 @@ mod rand_functions {
     ///
     /// x.shuffle();    // shuffle the elements inside the array
     /// ```
-    #[cfg(feature = "array")]
     #[rhai_fn(global)]
     pub fn shuffle(array: &mut Array) {
         let mut rng = rand::thread_rng();
