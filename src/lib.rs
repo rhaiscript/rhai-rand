@@ -110,7 +110,7 @@ use rhai::Array;
 
 def_package! {
     /// Package for random number generation, sampling and shuffling.
-    rhai::RandomPackage => |lib| {
+    RandomPackage(lib) {
         combine_with_exported_module!(lib, "rand", rand_functions);
 
         #[cfg(feature = "array")]
