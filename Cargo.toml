@@ -1,6 +1,6 @@
 [package]
 name = "rhai-rand"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2018"
 authors = ["Stephen Chung", "Jay Thomas"]
 description = "Random number package for Rhai"
