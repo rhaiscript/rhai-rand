@@ -4,6 +4,9 @@ use rhai_rand::RandomPackage;
 #[cfg(feature = "float")]
 use rhai::FLOAT;
 
+#[cfg(feature = "decimal")]
+use rust_decimal::Decimal;
+
 #[cfg(feature = "array")]
 use rhai::Array;
 
@@ -23,6 +26,15 @@ fn test_rand() -> Result<(), Box<EvalAltResult>> {
         let first = engine.eval::<FLOAT>("rand_float()")?;
         let second = engine.eval::<FLOAT>("rand_float()")?;
 
+        assert!(first != second);
+    }
+
+    #[cfg(feature = "decimal")]
+    {
+        let first = engine.eval::<Decimal>("rand_decimal()")?;
+        let second = engine.eval::<Decimal>("rand_decimal()")?;
+
+        println!("{}, {}", first, second);
         assert!(first != second);
     }
 
@@ -79,9 +91,13 @@ fn test_sample2() -> Result<(), Box<EvalAltResult>> {
         "
             let a = ['a', 'b', 'c', 'd'];
             a.sample(3)
-        "
+        ",
     )?;
-    assert_eq!(array.len(), 3, "Should return an array matching the requested sample size");
+    assert_eq!(
+        array.len(),
+        3,
+        "Should return an array matching the requested sample size"
+    );
 
     assert_eq!(
         engine.eval::<bool>(
@@ -100,7 +116,7 @@ fn test_sample2() -> Result<(), Box<EvalAltResult>> {
         "
             let a = ['a', 'b', 'c', 'd'];
             a.sample(5)
-        "
+        ",
     )?;
     assert_eq!(array.len(), 4, "Should be limited to the array's size");
 
@@ -108,7 +124,7 @@ fn test_sample2() -> Result<(), Box<EvalAltResult>> {
         "
             let a = ['a', 'b', 'c', 'd'];
             a.sample(0)
-        "
+        ",
     )?;
     assert_eq!(array.len(), 0, "Zero should return an empty array");
 
@@ -116,9 +132,13 @@ fn test_sample2() -> Result<(), Box<EvalAltResult>> {
         "
             let a = ['a', 'b', 'c', 'd'];
             a.sample(-1)
-        "
+        ",
     )?;
-    assert_eq!(array.len(), 0, "Negative amounts should return an empty array");
+    assert_eq!(
+        array.len(),
+        0,
+        "Negative amounts should return an empty array"
+    );
 
     Ok(())
 }
@@ -135,7 +155,7 @@ fn test_shuffle() -> Result<(), Box<EvalAltResult>> {
             let a = [];
             a.shuffle();
             a
-        "
+        ",
     )?;
 
     assert_eq!(array.len(), 0, "Should not affect empty arrays");
@@ -146,7 +166,7 @@ fn test_shuffle() -> Result<(), Box<EvalAltResult>> {
             let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
             a.shuffle();
             a
-        "
+        ",
     )?;
 
     println!("Array = {:?}", array);
@@ -156,7 +176,8 @@ fn test_shuffle() -> Result<(), Box<EvalAltResult>> {
     assert_eq!(array.len(), 15, "Array length should not change");
 
     for n in 1..15 {
-        array.iter()
+        array
+            .iter()
             .position(|&v| v == n)
             .expect(format!("Number {} was lost in the shuffle", n).as_str());
     }

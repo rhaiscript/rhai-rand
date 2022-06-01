@@ -79,11 +79,12 @@ for _ in 0..10 {
 Features
 --------
 
-|  Feature   | Default  | Description                                                                   |
-| :--------: | :------: | ----------------------------------------------------------------------------- |
-| `metadata` | disabled | includes functions metadata: parameter names/types, return type, doc-comments |
-|  `float`   | enabled  | provides random floating-point number generation                              |
-|  `array`   | enabled  | provides methods for [Rhai] arrays                                            |
+|  Feature   | Default  | Description                                                                        |
+| :--------: | :------: | ---------------------------------------------------------------------------------- |
+| `metadata` | disabled | includes functions metadata: parameter names/types, return type, doc-comments      |
+| `decimal`  | Disabled | provides random [decimal](https://crates.io/crates/rust_decimal) number generation |
+|  `float`   | enabled  | provides random floating-point number generation                                   |
+|  `array`   | enabled  | provides methods for [Rhai] arrays                                                 |
 
 
 API
@@ -91,14 +92,15 @@ API
 
 The following functions are defined in this package:
 
-|     Function      | Return value | Feature | Description                                                            |
-| :---------------: | :----------: | :-----: | ---------------------------------------------------------------------- |
-|     `rand()`      |    `INT`     |         | generates a random number                                              |
-|  `rand_float()`   |   `FLOAT`    | `float` | generates a random floating-point number between `0.0` and `1.0`       |
-|   `rand_bool()`   |    `bool`    |         | generates a random boolean                                             |
-| `Array.shuffle()` |              | `array` | shuffles the items in the [Rhai] array                                 |
-| `Array.sample()`  |  `Dynamic`   | `array` | copies a random element from the [Rhai] array                          |
-| `Array.sample(n)` |   `Array`    | `array` | copies a non-repeating random sample of elements from the [Rhai] array |
+|     Function      |                    Return value                    |  Feature  | Description                                                                |
+| :---------------: | :------------------------------------------------: | :-------: | -------------------------------------------------------------------------- |
+|     `rand()`      |                       `INT`                        |           | generates a random number                                                  |
+|  `rand_float()`   |                      `FLOAT`                       |  `float`  | generates a random floating-point number between `0.0` and `1.0`           |
+| `rand_decimal()`  | [`Decimal`](https://crates.io/crates/rust_decimal) | `decimal` | generates a random [decimal](https://crates.io/crates/rust_decimal) number |
+|   `rand_bool()`   |                       `bool`                       |           | generates a random boolean                                                 |
+| `Array.shuffle()` |                                                    |  `array`  | shuffles the items in the [Rhai] array                                     |
+| `Array.sample()`  |                     `Dynamic`                      |  `array`  | copies a random element from the [Rhai] array                              |
+| `Array.sample(n)` |                      `Array`                       |  `array`  | copies a non-repeating random sample of elements from the [Rhai] array     |
 
 
 [Rhai]: https://rhai.rs

@@ -70,10 +70,12 @@
 //!
 //! ## Features
 //!
-//! | Feature | Default | Description                                      |
-//! | :-----: | :-----: | ------------------------------------------------ |
-//! | `float` | Enabled | provides random floating-point number generation |
-//! | `array` | Enabled | provides methods for [Rhai] arrays               |
+//! |  Feature   | Default  | Description                                                                        |
+//! | :--------: | :------: | ---------------------------------------------------------------------------------- |
+//! | `metadata` | disabled | includes functions metadata: parameter names/types, return type, doc-comments      |
+//! | `decimal`  | Disabled | provides random [decimal](https://crates.io/crates/rust_decimal) number generation |
+//! |  `float`   | enabled  | provides random floating-point number generation                                   |
+//! |  `array`   | enabled  | provides methods for [Rhai] arrays                                                 |
 //!
 //!
 //! ## API
@@ -86,6 +88,7 @@
 //! | `rand(start..end)`  |    `INT`    |         | generates a random number within the exclusive range `start..end`            |
 //! | `rand(start..=end)` |    `INT`    |         | generates a random number within the inclusive range `start..=end`           |
 //! |   `rand_float()`    |   `FLOAT`   | `float` | generates a random floating-point number between `0.0` and `1.0` (exclusive) |
+//! |  `rand_decimal()`   |  `Decimal`  |`decimal`| generates a random [decimal](https://crates.io/crates/rust_decimal) number   |
 //! |    `rand_bool()`    |   `bool`    |         | generates a random boolean                                                   |
 //! |   `rand_bool(p)`    |   `bool`    | `float` | generates a random boolean with the probability `p` of being `true`          |
 //! | `Array::shuffle()`  |             | `array` | shuffles the elements in the [Rhai] array                                    |
@@ -235,6 +238,23 @@ mod rand_functions {
     /// ```
     #[cfg(feature = "float")]
     pub fn rand_float() -> FLOAT {
+        rand::random()
+    }
+
+    /// Generate a random [decimal](https://crates.io/crates/rust_decimal) number
+    /// between `0.0` and `1.0` (exclusive).
+    ///
+    /// `1.0` is _excluded_ from the possibilities.
+    ///
+    /// # Example
+    ///
+    /// ```rhai
+    /// let number = rand_decimal();
+    ///
+    /// print(`I'll give you a random number between 0 and 1: ${number}`);
+    /// ```
+    #[cfg(feature = "decimal")]
+    pub fn rand_decimal() -> rust_decimal::Decimal {
         rand::random()
     }
 }
