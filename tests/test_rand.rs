@@ -34,7 +34,13 @@ fn test_rand() -> Result<(), Box<EvalAltResult>> {
         let first = engine.eval::<Decimal>("rand_decimal()")?;
         let second = engine.eval::<Decimal>("rand_decimal()")?;
 
-        println!("{}, {}", first, second);
+        assert!(first != second);
+
+        let first =
+            engine.eval::<Decimal>("rand_decimal(123.456.to_decimal(), 789.234.to_decimal())")?;
+        let second =
+            engine.eval::<Decimal>("rand_decimal(123.456.to_decimal(), 789.234.to_decimal())")?;
+
         assert!(first != second);
     }
 
@@ -42,6 +48,13 @@ fn test_rand() -> Result<(), Box<EvalAltResult>> {
         let value = engine.eval::<INT>("(rand() % 100).abs()")?;
 
         println!("Random number = {}", value);
+    }
+
+    #[cfg(feature = "float")]
+    for _ in 0..10 {
+        let value = engine.eval::<FLOAT>("rand_float()")?;
+
+        println!("Random float = {}", value);
     }
 
     Ok(())
