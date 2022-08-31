@@ -21,12 +21,16 @@ fn test_rand() -> Result<(), Box<EvalAltResult>> {
 
     assert!(first != second);
 
+    let _first = engine.eval::<bool>("rand_bool()")?;
+
     #[cfg(feature = "float")]
     {
         let first = engine.eval::<FLOAT>("rand_float()")?;
         let second = engine.eval::<FLOAT>("rand_float()")?;
 
         assert!(first != second);
+
+        let _first = engine.eval::<bool>("rand_bool(0.01)")?;
     }
 
     #[cfg(feature = "decimal")]
