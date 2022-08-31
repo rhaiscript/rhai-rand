@@ -149,14 +149,14 @@ mod rand_functions {
     /// # Example
     ///
     /// ```rhai
-    /// let decision = rand(0.01);  // 1% probability
+    /// let decision = rand_bool(0.01);  // 1% probability
     ///
     /// if decision {
     ///     print("You hit the Jackpot!")
     /// }
     /// ```
     #[cfg(feature = "float")]
-    #[rhai_fn(name = "rand", return_raw)]
+    #[rhai_fn(name = "rand_bool", return_raw)]
     pub fn rand_bool_with_probability(probability: FLOAT) -> Result<bool, Box<EvalAltResult>> {
         if probability < 0.0 || probability > 1.0 {
             Err(EvalAltResult::ErrorArithmetic(

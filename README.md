@@ -103,7 +103,7 @@ The following functions are defined in this package:
 |      `rand_decimal()`      | [`Decimal`]  | `decimal` | generates a random [decimal][`Decimal`] number                         |
 | `rand_decimal(start, end)` | [`Decimal`]  | `decimal` | generates a random [decimal][`Decimal`] number within a range          |
 |       `rand_bool()`        |    `bool`    |           | generates a random boolean                                             |
-|       `rand_bool(p)`       |    `bool`    |           | generates a random boolean with the probability `p` of being `true`    |
+|       `rand_bool(p)`       |    `bool`    |     `float`      | generates a random boolean with the probability `p` of being `true`    |
 |     `Array.shuffle()`      |              |  `array`  | shuffles the items in the [Rhai] array                                 |
 |      `Array.sample()`      |  `Dynamic`   |  `array`  | copies a random element from the [Rhai] array                          |
 |     `Array.sample(n)`      |   `Array`    |  `array`  | copies a non-repeating random sample of elements from the [Rhai] array |
