@@ -82,7 +82,7 @@ Features
 |  Feature   | Default  | Description                                                                        |
 | :--------: | :------: | ---------------------------------------------------------------------------------- |
 | `metadata` | disabled | includes functions metadata: parameter names/types, return type, doc-comments      |
-| `decimal`  | Disabled | provides random [decimal](https://crates.io/crates/rust_decimal) number generation |
+| `decimal`  | disabled | provides random [decimal](https://crates.io/crates/rust_decimal) number generation |
 |  `float`   | enabled  | provides random floating-point number generation                                   |
 |  `array`   | enabled  | provides methods for [Rhai] arrays                                                 |
 
@@ -103,7 +103,7 @@ The following functions are defined in this package:
 |      `rand_decimal()`      | [`Decimal`]  | `decimal` | generates a random [decimal][`Decimal`] number                         |
 | `rand_decimal(start, end)` | [`Decimal`]  | `decimal` | generates a random [decimal][`Decimal`] number within a range          |
 |       `rand_bool()`        |    `bool`    |           | generates a random boolean                                             |
-|       `rand_bool(p)`       |    `bool`    |     `float`      | generates a random boolean with the probability `p` of being `true`    |
+|       `rand_bool(p)`       |    `bool`    |  `float`  | generates a random boolean with the probability `p` of being `true`    |
 |     `Array.shuffle()`      |              |  `array`  | shuffles the items in the [Rhai] array                                 |
 |      `Array.sample()`      |  `Dynamic`   |  `array`  | copies a random element from the [Rhai] array                          |
 |     `Array.sample(n)`      |   `Array`    |  `array`  | copies a non-repeating random sample of elements from the [Rhai] array |
