@@ -75,40 +75,11 @@ for _ in 0..10 {
 }
 ```
 
+API and Features
+----------------
 
-Features
---------
-
-|  Feature   | Default  | Description                                                                        |
-| :--------: | :------: | ---------------------------------------------------------------------------------- |
-| `metadata` | disabled | includes functions metadata: parameter names/types, return type, doc-comments      |
-| `decimal`  | disabled | provides random [decimal](https://crates.io/crates/rust_decimal) number generation |
-|  `float`   | enabled  | provides random floating-point number generation                                   |
-|  `array`   | enabled  | provides methods for [Rhai] arrays                                                 |
-
-
-API
----
-
-The following functions are defined in this package:
-
-|          Function          | Return value |  Feature  | Description                                                            |
-| :------------------------: | :----------: | :-------: | ---------------------------------------------------------------------- |
-|          `rand()`          |    `INT`     |           | generates a random integer number                                      |
-|     `rand(start..end)`     |    `INT`     |           | generates a random integer number within an exclusive range            |
-|    `rand(start..=end)`     |    `INT`     |           | generates a random integer number within an inclusive range            |
-|     `rand(start, end)`     |    `INT`     |           | generates a random integer number within a range                       |
-|       `rand_float()`       |   `FLOAT`    |  `float`  | generates a random floating-point number between `0.0` and `1.0`       |
-|  `rand_float(start, end)`  |   `FLOAT`    |  `float`  | generates a random floating-point number an exclusive range            |
-|      `rand_decimal()`      | [`Decimal`]  | `decimal` | generates a random [decimal][`Decimal`] number                         |
-| `rand_decimal(start, end)` | [`Decimal`]  | `decimal` | generates a random [decimal][`Decimal`] number within a range          |
-|       `rand_bool()`        |    `bool`    |           | generates a random boolean                                             |
-|       `rand_bool(p)`       |    `bool`    |  `float`  | generates a random boolean with the probability `p` of being `true`    |
-|     `Array.shuffle()`      |              |  `array`  | shuffles the items in the [Rhai] array                                 |
-|      `Array.sample()`      |  `Dynamic`   |  `array`  | copies a random element from the [Rhai] array                          |
-|     `Array.sample(n)`      |   `Array`    |  `array`  | copies a non-repeating random sample of elements from the [Rhai] array |
+See the online documentation.
 
 
 [Rhai]: https://rhai.rs
 [`rand`]: https://crates.io/crates/rand
-[`Decimal`]: https://crates.io/crates/rust_decimal

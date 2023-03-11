@@ -4,7 +4,7 @@ use rhai::plugin::*;
 #[export_module]
 pub mod array_functions {
     use rand::prelude::*;
-    use rhai::{Array, Dynamic, EvalAltResult, Position, INT};
+    use rhai::{Array, Dynamic, INT};
 
     /// Copy a random element from the array and return it.
     /// Requires the `array` feature.

@@ -70,13 +70,7 @@
 //!
 //! ## Features
 //!
-//! |  Feature   | Default  | Description                                                                        |
-//! | :--------: | :------: | ---------------------------------------------------------------------------------- |
-//! | `metadata` | disabled | includes functions metadata: parameter names/types, return type, doc-comments      |
-//! | `decimal`  | disabled | provides random [decimal](https://crates.io/crates/rust_decimal) number generation |
-//! |  `float`   | enabled  | provides random floating-point number generation                                   |
-//! |  `array`   | enabled  | provides methods for [Rhai] arrays                                                 |
-//!
+#![cfg_attr(feature = "document-features", doc = document_features::document_features!(feature_label = "<span id=\"feature-{feature}\">**`{feature}`**</span>"))]
 //!
 //! ## API
 //!

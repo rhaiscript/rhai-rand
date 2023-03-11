@@ -16,6 +16,7 @@ categories = ["embedded"]
 rhai = { version = "1.5" }
 rand = { version = "0.8", features = ["alloc"] }
 rust_decimal = { version = "1.25", features = ["rand"], optional = true }
+document-features = { version = "0.2", optional = true }
 
 [build-dependencies]
 rhai = { version = "1.5" }
@@ -25,12 +26,17 @@ serde_json = "1.0.82"
 serde = "1.0.140"
 
 [features]
+## Default features: `float` and `array`.
 default = [ "float", "array" ]
+## Includes functions metadata: parameter names/types, return type, doc-comments etc.
 metadata = [ "rhai/metadata" ]
+## Provides random floating-point number generation.
 float = []
+## Provides methods for Rhai arrays.
 array = []
+## Provides random [decimal](https://crates.io/crates/rust_decimal) number generation.
 decimal = [ "rhai/decimal", "rust_decimal" ]
 
 # NOTE: Need to manually specify `metadata` feature for local `cargo doc`.
 [package.metadata.docs.rs]
-features = ["decimal", "metadata"]
+features = ["document-features", "decimal", "metadata"]
