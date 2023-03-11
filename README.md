@@ -69,7 +69,7 @@ engine.register_global_module(RandomPackage::new().as_shared_module());
 
 // Print 10 random numbers, each of which between 0-99!
 for _ in 0..10 {
-    let value = engine.eval::<INT>("(rand() % 100).abs()")?;
+    let value = engine.eval::<i64>("(rand() % 100).abs()")?;
 
     println!("Random number = {}", value);
 }
