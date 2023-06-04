@@ -52,6 +52,8 @@ mod doc_gen {
                 .replace(" -> Result<", " -> ")
                 .replace(", Box<EvalAltResult>>", "")
                 .replace("&mut ", "")
+                .replace(" -> ()", "")
+                .replace("ImmutableString", "String")
         }
 
         pub fn fmt_doc_comments(&self) -> Option<String> {
