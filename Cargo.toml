@@ -1,6 +1,6 @@
 [package]
 name = "rhai-rand"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2018"
 resolver = "2"
 authors = ["Stephen Chung", "Jay Thomas"]
@@ -27,15 +27,15 @@ serde = "1.0.140"
 
 [features]
 ## Default features: `float` and `array`.
-default = [ "float", "array" ]
+default = ["float", "array"]
 ## Includes functions metadata: parameter names/types, return type, doc-comments etc.
-metadata = [ "rhai/metadata" ]
+metadata = ["rhai/metadata"]
 ## Provides random floating-point number generation.
 float = []
 ## Provides methods for Rhai arrays.
 array = []
 ## Provides random [decimal](https://crates.io/crates/rust_decimal) number generation.
-decimal = [ "rhai/decimal", "rust_decimal" ]
+decimal = ["rhai/decimal", "rust_decimal"]
 
 # NOTE: Need to manually specify `metadata` feature for local `cargo doc`.
 [package.metadata.docs.rs]
