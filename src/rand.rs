@@ -4,6 +4,7 @@ use rhai::plugin::*;
 #[export_module]
 pub mod rand_functions {
     use rand::prelude::*;
+    use rand::distributions::{Alphanumeric, DistString};
     use rhai::{EvalAltResult, Position, INT};
     use std::ops::{Range, RangeInclusive};
 
@@ -26,6 +27,31 @@ pub mod rand_functions {
     /// ```
     pub fn rand_bool() -> bool {
         rand::random()
+    }
+
+    /// Generate a random alphanumeric string of a specified length.
+    ///
+    /// The string will contain random uppercase letters (A-Z), lowercase letters (a-z),
+    /// and digits (0-9).
+    ///
+    /// ### Example
+    ///
+    /// ```rhai
+    /// let random_file_name= rand_alpha_numeric(12);
+    ///
+    /// print(`Random file name: ${random_file_name}`);
+    /// ```
+    #[rhai_fn(name = "rand_alpha_numeric", return_raw)]
+    pub fn rand_alpha_numeric_of_length(x: INT) -> Result<String, Box<EvalAltResult>> {
+        if x <= 0 {
+            Err(EvalAltResult::ErrorArithmetic(
+                format!("String length must be positive: {}", x),
+                Position::NONE,
+            )
+            .into())
+        } else {
+            Ok(Alphanumeric.sample_string(&mut rand::thread_rng(), x as usize))
+        }
     }
 
     /// Generate a random boolean value with a probability of being `true`.
