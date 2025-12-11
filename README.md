@@ -37,6 +37,10 @@ if decision {
     print("Fixed number = 42");
 }
 
+// Generate random alphanumeric string
+let random_string= rand_alpha_numeric(12);
+print(`Random string: ${random_string}`);
+
 // Create array
 let a = [1, 2, 3, 4, 5];
 
