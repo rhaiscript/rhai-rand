@@ -207,3 +207,19 @@ fn test_shuffle() -> Result<(), Box<EvalAltResult>> {
 
     Ok(())
 }
+#[test]
+fn test_rand_alpha_numeric() -> Result<(), Box<EvalAltResult>> {
+    let mut engine = Engine::new();
+    engine.register_global_module(RandomPackage::new().as_shared_module());
+
+    let result = engine.eval::<String>("rand_alpha_numeric(10)")?;
+    assert_eq!(result.len(), 10);
+
+    let zero_err = engine.eval::<String>("rand_alpha_numeric(0)").unwrap_err();
+    assert!(zero_err.to_string().contains("String length must be positive: 0"));
+
+    let negative_err = engine.eval::<String>("rand_alpha_numeric(-10)").unwrap_err();
+    assert!(negative_err.to_string().contains("String length must be positive: -10"));
+
+    Ok(())
+}
