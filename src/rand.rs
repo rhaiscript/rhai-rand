@@ -3,8 +3,7 @@ use rhai::plugin::*;
 
 #[export_module]
 pub mod rand_functions {
-    use rand::distributions::{Alphanumeric, DistString};
-    use rand::prelude::*;
+    use rand::distr::{Alphanumeric, SampleString};
     use rhai::{EvalAltResult, Position, INT};
     use std::ops::{Range, RangeInclusive};
 
@@ -51,7 +50,7 @@ pub mod rand_functions {
             )
             .into())
         } else {
-            Ok(Alphanumeric.sample_string(&mut rand::thread_rng(), x as usize))
+            Ok(Alphanumeric.sample_string(&mut rand::rng(), x as usize))
         }
     }
 
