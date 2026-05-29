@@ -3,7 +3,6 @@ use rhai::plugin::*;
 
 #[export_module]
 pub mod rand_functions {
-    use rand::prelude::*;
     use rhai::{EvalAltResult, Position, INT};
     use std::ops::{Range, RangeInclusive};
 
@@ -24,6 +23,7 @@ pub mod rand_functions {
     ///     print("You hit the Jackpot!")
     /// }
     /// ```
+    #[rhai_fn(volatile)]
     pub fn rand_bool() -> bool {
         rand::random()
     }
@@ -43,7 +43,7 @@ pub mod rand_functions {
     /// }
     /// ```
     #[cfg(feature = "float")]
-    #[rhai_fn(name = "rand_bool", return_raw)]
+    #[rhai_fn(name = "rand_bool", volatile, return_raw)]
     pub fn rand_bool_with_probability(probability: FLOAT) -> Result<bool, Box<EvalAltResult>> {
         if probability < 0.0 || probability > 1.0 {
             Err(EvalAltResult::ErrorArithmetic(
@@ -55,7 +55,7 @@ pub mod rand_functions {
             )
             .into())
         } else {
-            Ok(rand::thread_rng().gen_bool(probability as f64))
+            Ok(rand::random_bool(probability as f64))
         }
     }
 
@@ -68,6 +68,7 @@ pub mod rand_functions {
     ///
     /// print(`I'll give you a random number: ${number}`);
     /// ```
+    #[rhai_fn(volatile)]
     pub fn rand() -> INT {
         rand::random()
     }
@@ -81,7 +82,7 @@ pub mod rand_functions {
     ///
     /// print(`I'll give you a random number between 18 and 38: ${number}`);
     /// ```
-    #[rhai_fn(name = "rand", return_raw)]
+    #[rhai_fn(name = "rand", volatile, return_raw)]
     pub fn rand_exclusive_range(range: Range<INT>) -> Result<INT, Box<EvalAltResult>> {
         if range.is_empty() {
             Err(EvalAltResult::ErrorArithmetic(
@@ -90,7 +91,7 @@ pub mod rand_functions {
             )
             .into())
         } else {
-            Ok(rand::thread_rng().gen_range(range))
+            Ok(rand::random_range(range))
         }
     }
 
@@ -103,7 +104,7 @@ pub mod rand_functions {
     ///
     /// print(`I'll give you a random number between 18 and 38: ${number}`);
     /// ```
-    #[rhai_fn(name = "rand", return_raw)]
+    #[rhai_fn(name = "rand", volatile, return_raw)]
     pub fn rand_inclusive_range(range: RangeInclusive<INT>) -> Result<INT, Box<EvalAltResult>> {
         if range.is_empty() {
             Err(EvalAltResult::ErrorArithmetic(
@@ -112,7 +113,7 @@ pub mod rand_functions {
             )
             .into())
         } else {
-            Ok(rand::thread_rng().gen_range(range))
+            Ok(rand::random_range(range))
         }
     }
 
@@ -125,7 +126,7 @@ pub mod rand_functions {
     ///
     /// print(`I'll give you a random number between 18 and 38: ${number}`);
     /// ```
-    #[rhai_fn(name = "rand", return_raw)]
+    #[rhai_fn(name = "rand", volatile, return_raw)]
     pub fn rand_from_to_inclusive(start: INT, end: INT) -> Result<INT, Box<EvalAltResult>> {
         if start >= end {
             Err(EvalAltResult::ErrorArithmetic(
@@ -134,7 +135,7 @@ pub mod rand_functions {
             )
             .into())
         } else {
-            Ok(rand::thread_rng().gen_range(start..=end))
+            Ok(rand::random_range(start..=end))
         }
     }
 
@@ -151,6 +152,7 @@ pub mod rand_functions {
     /// print(`I'll give you a random number between 0 and 1: ${number}`);
     /// ```
     #[cfg(feature = "float")]
+    #[rhai_fn(volatile)]
     pub fn rand_float() -> FLOAT {
         rand::random()
     }
@@ -165,7 +167,7 @@ pub mod rand_functions {
     /// print(`I'll give you a random number between 123.456 and 789.678: ${number}`);
     /// ```
     #[cfg(feature = "float")]
-    #[rhai_fn(name = "rand_float", return_raw)]
+    #[rhai_fn(name = "rand_float", volatile, return_raw)]
     pub fn rand_float_range(start: FLOAT, end: FLOAT) -> Result<FLOAT, Box<EvalAltResult>> {
         if start >= end {
             Err(EvalAltResult::ErrorArithmetic(
@@ -174,7 +176,7 @@ pub mod rand_functions {
             )
             .into())
         } else {
-            Ok(rand::thread_rng().gen_range(start..=end))
+            Ok(rand::random_range(start..=end))
         }
     }
 
@@ -189,6 +191,7 @@ pub mod rand_functions {
     /// print(`I'll give you a random decimal number: ${number}`);
     /// ```
     #[cfg(feature = "decimal")]
+    #[rhai_fn(volatile)]
     pub fn rand_decimal() -> Decimal {
         rand::random()
     }
@@ -203,7 +206,7 @@ pub mod rand_functions {
     /// print(`I'll give you a random number between 18 and 38: ${number}`);
     /// ```
     #[cfg(feature = "decimal")]
-    #[rhai_fn(name = "rand_decimal", return_raw)]
+    #[rhai_fn(name = "rand_decimal", volatile, return_raw)]
     pub fn rand_decimal_range(start: Decimal, end: Decimal) -> Result<Decimal, Box<EvalAltResult>> {
         if start >= end {
             Err(EvalAltResult::ErrorArithmetic(
@@ -212,7 +215,7 @@ pub mod rand_functions {
             )
             .into())
         } else {
-            Ok(rand::thread_rng().gen_range(start..=end))
+            Ok(rand::random_range(start..=end))
         }
     }
 }

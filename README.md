@@ -1,5 +1,5 @@
 `rhai-rand` - Package to Generate Random Numbers
-===============================================
+================================================
 
 [![License](https://img.shields.io/crates/l/rhai)](https://github.com/license/rhaiscript/rhai-rand)
 [![crates.io](https://img.shields.io/crates/v/rhai-rand?logo=rust)](https://crates.io/crates/rhai-rand/)
@@ -20,7 +20,7 @@ Usage
 
 ```toml
 [dependencies]
-rhai-rand = "0.1"
+rhai-rand = "0.2"
 ```
 
 ### [Rhai] script

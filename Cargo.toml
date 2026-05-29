@@ -1,6 +1,6 @@
 [package]
 name = "rhai-rand"
-version = "0.1.6"
+version = "0.2.0"
 edition = "2018"
 resolver = "2"
 authors = ["Stephen Chung", "Jay Thomas"]
@@ -14,14 +14,14 @@ categories = ["embedded"]
 
 [dependencies]
 rhai = { version = "1.5" }
-rand = { version = "0.8", features = ["alloc"] }
-rust_decimal = { version = "1.25", features = ["rand"], optional = true }
+rand = { version = "0.9", features = ["alloc"] }
+rust_decimal = { version = "1.25", features = ["rand-0_9"], optional = true }
 document-features = { version = "0.2", optional = true }
 
 [build-dependencies]
 rhai = { version = "1.5" }
-rand = { version = "0.8", features = ["alloc"] }
-rust_decimal = { version = "1.25", features = ["rand"], optional = true }
+rand = { version = "0.9", features = ["alloc"] }
+rust_decimal = { version = "1.25", features = ["rand-0_9"], optional = true }
 serde_json = "1.0.82"
 serde = "1.0.140"
 

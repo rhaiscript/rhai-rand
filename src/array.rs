@@ -18,11 +18,10 @@ pub mod array_functions {
     ///
     /// print(`I'll give you a random number between 1 and 5: ${number}`);
     /// ```
-    #[rhai_fn(global)]
+    #[rhai_fn(global, volatile)]
     pub fn sample(array: &mut Array) -> Dynamic {
         if !array.is_empty() {
-            let mut rng = rand::thread_rng();
-            if let Some(res) = array.choose(&mut rng) {
+            if let Some(res) = array.choose(&mut rand::rng()) {
                 return res.clone();
             }
         }
@@ -46,13 +45,13 @@ pub mod array_functions {
     ///
     /// print(`I'll give you 3 random numbers between 1 and 5: ${samples}`);
     /// ```
-    #[rhai_fn(global, name = "sample")]
+    #[rhai_fn(global, volatile, name = "sample")]
     pub fn sample_with_amount(array: &mut Array, amount: INT) -> Array {
         if array.is_empty() || amount <= 0 {
             return Array::new();
         }
 
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let amount = amount as usize;
 
         if amount >= array.len() {
@@ -79,9 +78,8 @@ pub mod array_functions {
     ///
     /// x.shuffle();    // shuffle the elements inside the array
     /// ```
-    #[rhai_fn(global)]
+    #[rhai_fn(global, volatile)]
     pub fn shuffle(array: &mut Array) {
-        let mut rng = rand::thread_rng();
-        array.shuffle(&mut rng);
+        array.shuffle(&mut rand::rng());
     }
 }
